@@ -20,6 +20,6 @@ spec:
           image: jdavidperalta/backendeco:0.0.2
           ports:
             - containerPort: 3000
-        envFrom:
-          - secretRef:
-              name: algo debo colocar aca
+          envFrom:
+            - secretRef:
+                name: backend-secret
