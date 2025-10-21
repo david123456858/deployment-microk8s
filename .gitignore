@@ -1,2 +1,3 @@
 k8s-backend/secrets.yml
+k8s-backend-images/secrets.yml
 k8s-postgrest/secrets-posgrets.yml

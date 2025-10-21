@@ -1,25 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ecomove-back
+  name: ecomove-back-images
   namespace: development-ecomove
   labels:
-    app: ecomove
+    app: ecomove-images
+
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: ecomove
-  template:
+      app: ecomove-images
+  template: 
     metadata:
       labels:
-        app: ecomove
+        app: ecomove-images
     spec:
       containers:
-        - name: containers-ecomove
-          image: jdavidperalta/backendeco:0.0.3
+        - name: containers-ecomove-images
+          image: jdavidperalta/backend-images:0.0.4
           ports:
             - containerPort: 3000
           envFrom:
             - secretRef:
-                name: backend-secret
+              name: images-secret
