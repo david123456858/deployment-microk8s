@@ -23,4 +23,4 @@ spec:
             - containerPort: 3000
           envFrom:
             - secretRef:
-              name: images-secret
+                name: images-secret
