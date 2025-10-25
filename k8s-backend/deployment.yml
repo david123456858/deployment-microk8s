@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: containers-ecomove
-          image: jdavidperalta/backendeco:0.0.3
+          image: jdavidperalta/backendeco:0.0.5
           ports:
             - containerPort: 3000
           envFrom:
