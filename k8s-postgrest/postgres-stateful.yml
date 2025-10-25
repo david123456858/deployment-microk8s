@@ -4,7 +4,7 @@ metadata:
   name: postgres
   namespace: database-posgrest
 spec:
-  serviceName: "postgres"
+  serviceName: "database-posgrest"
   replicas: 1
   selector:
     matchLabels:
