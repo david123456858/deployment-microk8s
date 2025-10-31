@@ -36,7 +36,7 @@ spec:
                   name: postgrest-secret # OJO CAMBIAE LOS SECREST A LOS QUE SON
                   key: DB_NAME_ECO
           volumeMounts:
-            - name: postgres-pv-images
+            - name: postgres-pvc-images
               mountPath: /var/lib/postgresql/data
   volumeClaimTemplates:
     - metadata:
