@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: database-posgrest
+  name: database-posgrest-images
   namespace: database-posgrest
 spec:
-  serviceName: "database-posgrest"
+  serviceName: "database-posgrest-images"
   replicas: 1
   selector:
     matchLabels:
-      app: database-posgrest
+      app: database-posgrest-images
   template:
     metadata:
       labels:
-        app: database-posgrest
+        app: database-posgrest-images
     spec:
       containers:
-        - name: database-posgrest
+        - name: database-posgrest-images
           image: postgres:16.3
           ports:
             - containerPort: 5432
@@ -23,24 +23,24 @@ spec:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: postgrest-secret
+                  name: postgrest-secret # OJO CAMBIAE LOS SECREST A LOS QUE SON
                   key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgrest-secret
+                  name: postgrest-secret # OJO CAMBIAE LOS SECREST A LOS QUE SON
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
               valueFrom:
                 secretKeyRef:
-                  name: postgrest-secret
+                  name: postgrest-secret # OJO CAMBIAE LOS SECREST A LOS QUE SON
                   key: DB_NAME_ECO
           volumeMounts:
-            - name: postgres-pv
+            - name: postgres-pv-images
               mountPath: /var/lib/postgresql/data
   volumeClaimTemplates:
     - metadata:
-        name: postgres-pvc
+        name: postgres-pvc-images
       spec:
         accessModes:
           - ReadWriteOnce
