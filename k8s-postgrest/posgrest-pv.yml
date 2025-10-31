@@ -11,5 +11,5 @@ spec:
   hostPath:
     path: /mnt/data/postgres
   claimRef:
-    namespace: database-posgrest
+    namespace: postgres
     name: postgres-pvc

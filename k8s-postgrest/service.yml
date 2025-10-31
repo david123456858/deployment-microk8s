@@ -2,8 +2,8 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: database-posgrest
-  namespace: database-posgrest
+  name: postgres
+  namespace: postgres
 spec:
   selector:
     app: postgres
