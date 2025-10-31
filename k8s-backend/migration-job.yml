@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: drizzle-migrate
+  namespace: development-ecomove
+spec:
+  template:
+    spec:
+      containers:
+        - name: migrate
+          image: jdavidperalta/backend:0.0.4 # o una imagen que tenga drizzle-kit
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              echo "🗄️  Iniciando migraciones de base de datos..."
+              echo "📁 Directorio actual: $(pwd)"
+              echo "📂 Contenido:"
+              ls -la
+              echo ""
+              echo "📂 Contenido de build/:"
+              ls -la build/
+              echo ""
+              echo "🔧 Ejecutando drizzle-kit push con config en build/..."
+              npx drizzle-kit push --config=build/drizzle.config.js
+              echo ""
+              echo "✅ Migración completada!"
+          envFrom:
+            - secretRef:
+                name: backend-secret   # tus variables de DB (POSTGRES_USER, PASSWORD, etc)
+      restartPolicy: Never
+  backoffLimit: 1
