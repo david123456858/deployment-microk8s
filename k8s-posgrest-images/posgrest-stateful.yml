@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: database-posgrest-images
-  namespace: database-posgrest
+  name: postgres-images
+  namespace: postgres
 spec:
-  serviceName: "database-posgrest-images"
+  serviceName: "postgres-images-svc"
   replicas: 1
   selector:
     matchLabels:
-      app: database-posgrest-images
+      app: postgres-images
   template:
     metadata:
       labels:
-        app: database-posgrest-images
+        app: postgres-images
     spec:
       containers:
-        - name: database-posgrest-images
+        - name: postgres-images
           image: postgres:16.3
           ports:
             - containerPort: 5432
