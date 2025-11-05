@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-images-svc
+  namespace: postgres
+spec:
+  selector:
+    app: postgres-images
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432

@@ -1,25 +1,25 @@
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ecomove-front
   namespace: development-ecomove
   labels:
     app: ecomove-front
-  spec:
-    replicas: 2
-    selector:
-      matchLabels:
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ecomove-front
+  template:
+    metadata:
+      labels:
         app: ecomove-front
-    template:
-      metadata:
-        labels:
-          app: ecomove-front
-      spec:
-        containers:
-          - name: container-front-ecomove
-            image: keduardoquintero/eco-frontend:v0.4
-            ports:
-              - containerPort: 80
-            envFrom:
-              - secretRef:
-                  name: front-secret
+    spec:
+      containers:
+        - name: ecomove-front-container
+          image: keduardoquintero/eco-frontend:v0.4
+          ports:
+            - containerPort: 80
+          envFrom:
+            - secretRef:
+                name: front-secret

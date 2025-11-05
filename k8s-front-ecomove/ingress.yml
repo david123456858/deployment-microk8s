@@ -1,21 +1,21 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata: 
-  name:  ecomove-front-ingress 
+  name: ecomove-front-ingress
   namespace: development-ecomove
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-  spec:
-    ingressClassName: nginx
-    rules:
-    - host: ecomove.local   
-      http:
-        paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: ecomove-front-svc
-              port:
-                number: 80
+    # nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: ecomove.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ecomove-front-svc
+            port:
+              number: 80
