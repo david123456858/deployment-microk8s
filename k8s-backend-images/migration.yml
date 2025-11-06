@@ -8,7 +8,7 @@ spec:
     spec:
       containers:
         - name: migrate
-          image: jdavidperalta/backend-images:0.0.4 # o una imagen que tenga drizzle-kit
+          image: jdavidperalta/backend-images:0.0.7 # o una imagen que tenga drizzle-kit
           command: ["/bin/sh", "-c"]
           args:
             - |
@@ -26,6 +26,6 @@ spec:
               echo "✅ Migración completada!"
           envFrom:
             - secretRef:
-                name: backend-secret   # tus variables de DB (POSTGRES_USER, PASSWORD, etc)
+                name: images-secret   # tus variables de DB (POSTGRES_USER, PASSWORD, etc)
       restartPolicy: Never
   backoffLimit: 1

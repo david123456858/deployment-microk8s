@@ -5,14 +5,14 @@ metadata:
   namespace: development-ecomove
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-    # nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
   rules:
   - host: ecomove.local
     http:
       paths:
-      - path: /
+      - path: /(.*)
         pathType: Prefix
         backend:
           service:
