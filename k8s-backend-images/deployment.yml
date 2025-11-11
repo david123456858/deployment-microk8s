@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: containers-ecomove-images
-          image: jdavidperalta/backend-images:0.0.6
+          image: jdavidperalta/backend-pipeline-images:10
           ports:
             - containerPort: 3000
           envFrom:

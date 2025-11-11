@@ -10,7 +10,7 @@ spec:
   ports:
     - name: backend
       port: 3000
-      targetPort: 3001
+      targetPort: 3000
       protocol: TCP
   selector:
     app: ecomove
