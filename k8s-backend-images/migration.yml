@@ -8,7 +8,7 @@ spec:
     spec:
       containers:
         - name: migrate
-          image: jdavidperalta/backend-pipeline-images:10 # o una imagen que tenga drizzle-kit
+          image: jdavidperalta/backend-pipeline-images:0.0.1 # o una imagen que tenga drizzle-kit
           command: ["/bin/sh", "-c"]
           args:
             - |
