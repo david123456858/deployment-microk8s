@@ -3,16 +3,16 @@ kind: Ingress
 metadata:
   name: ecomove-ingress
   namespace: development-ecomove
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    # Para CORS si es necesario:
-    nginx.ingress.kubernetes.io/enable-cors: "true"
-    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
-    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+  # annotations:
+  #   nginx.ingress.kubernetes.io/rewrite-target: /
+  #   # Para CORS si es necesario:
+  #   nginx.ingress.kubernetes.io/enable-cors: "true"
+  #   nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
+  #   nginx.ingress.kubernetes.io/cors-allow-origin: "*"
 spec:
   ingressClassName: nginx
   rules:
-    - host: ecomove.local  # Cambia esto por tu dominio o usa la IP
+    - host: ecomove.com  # Cambia esto por tu dominio o usa la IP
       http:
         paths:
           # Frontend
@@ -23,19 +23,3 @@ spec:
                 name: ecomove-front-svc
                 port:
                   number: 80
-          # Backend API
-          - path: /api
-            pathType: Prefix
-            backend:
-              service:
-                name: ecomove-svc
-                port:
-                  number: 3000
-          # Backend Images API
-          - path: /images
-            pathType: Prefix
-            backend:
-              service:
-                name: ecomove-svc-images
-                port:
-                  number: 3000

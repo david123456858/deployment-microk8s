@@ -3,10 +3,13 @@ kind: Service
 metadata:
   name: ecomove-front-svc
   namespace: development-ecomove
+  labels:
+    app: ecomove-front 
 spec:
   selector:
     app: ecomove-front  
   ports:
     - port: 80
       targetPort: 80
+      protocol: TCP
   type: ClusterIP
