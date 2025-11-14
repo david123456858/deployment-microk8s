@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: ecomove-front-container
-          image: keduardoquintero/eco-frontend:0.6
+          image: keduardoquintero/eco-frontend:0.9
           ports:
             - containerPort: 80
           envFrom:
