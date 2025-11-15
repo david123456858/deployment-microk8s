@@ -15,6 +15,24 @@ spec:
     metadata:
       labels:
         app: ecomove-images
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/role: "images"
+        # SECRET A INYECTAR
+        vault.hashicorp.com/agent-inject-secret-images: "secret/data/ecomove/images"
+        vault.hashicorp.com/vault-address: "http://external-vault.development-ecomove.svc.cluster.local:8200"
+        # TEMPLATE QUE VA DENTRO DEL ARCHIVO
+        vault.hashicorp.com/agent-inject-template-images: |
+          {{- with secret "secret/data/ecomove/vehicles" -}}
+          DATABASE_URL={{ .Data.data.DATABASE_URL }}
+          IMAGE_SERVICE_URL={{ .Data.data.IMAGE_SERVICE_URL }}
+          JWT_SECRET={{ .Data.data.JWT_SECRET }}
+          {{- end }}
+
+        # OPCIONAL: si quieres elegir explícitamente el nombre del archivo
+        vault.hashicorp.com/agent-inject-file-images: "images.env"
+
     spec:
       containers:
         - name: containers-ecomove-images
