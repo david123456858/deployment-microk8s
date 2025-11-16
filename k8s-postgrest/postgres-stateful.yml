@@ -17,14 +17,15 @@ spec:
         vault.hashicorp.com/agent-inject: "true"
         vault.hashicorp.com/agent-inject-init-first: "true"
         vault.hashicorp.com/role: "bd-vehicles"
-        vault.hashicorp.com/agent-inject-secret-db.env: "secret/data/ecomove/bd-vehicles"
-        vault.hashicorp.com/vault-address: "http://external-vault-bd.postgres.svc.cluster.local:8200"
-        vault.hashicorp.com/agent-inject-template-db.env: |
+        vault.hashicorp.com/agent-inject-secret-db: "secret/data/ecomove/bd-vehicles"
+        vault.hashicorp.com/vault-address: "http://external-vault.development-ecomove.svc.cluster.local:8200" 
+        vault.hashicorp.com/agent-inject-template-db: |
           {{- with secret "secret/data/ecomove/bd-vehicles" -}}
           export POSTGRES_USER="{{ .Data.data.DB_USER }}"
           export POSTGRES_PASSWORD="{{ .Data.data.DB_APP_USER_PASSWORD }}"
           export POSTGRES_DB="{{ .Data.data.DB_NAME_AUTH }}"
           {{- end }}
+        vault.hashicorp.com/agent-inject-file-db: "db.env"
     spec:
       serviceAccountName: myapp-bd
       containers:
@@ -40,7 +41,6 @@ spec:
           volumeMounts:
             - name: postgres-pvc
               mountPath: /var/lib/postgresql/data
-  
   volumeClaimTemplates:
     - metadata:
         name: postgres-pvc
