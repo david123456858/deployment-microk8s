@@ -14,12 +14,22 @@ spec:
     metadata:
       labels:
         app: ecomove-front
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/role: "front"
+        vault.hashicorp.com/agent-inject-secret-config.env: "secret/data/ecomove/front"
+        vault.hashicorp.com/vault-address: "http://external-vault.development-ecomove.svc.cluster.local:8200"
+        vault.hashicorp.com/agent-inject-template-config.env: |
+          {{- with secret "secret/data/ecomove/front" -}}
+          VITE_API_URL={{ .Data.data.VITE_API_URL }}
+          VITE_IMAGE_API_URL={{ .Data.data.VITE_IMAGE_API_URL }}
+          {{- end }}  
+
     spec:
+      serviceAccountName: myapp-sa
       containers:
         - name: ecomove-front-container
-          image: keduardoquintero/eco-frontend:0.9
+          image: keduardoquintero/eco-frontend:1.1
           ports:
             - containerPort: 80
-          envFrom:
-            - secretRef:
-                name: front-secret

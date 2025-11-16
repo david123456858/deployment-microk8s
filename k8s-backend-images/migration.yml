@@ -5,27 +5,35 @@ metadata:
   namespace: development-ecomove
 spec:
   template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/tls-skip-verify: "true"
+        vault.hashicorp.com/role: "images"
+        vault.hashicorp.com/vault-address: "http://external-vault.development-ecomove.svc.cluster.local:8200"
+
+        vault.hashicorp.com/agent-inject-secret-images.env: "secret/data/ecomove/images"
+        vault.hashicorp.com/agent-inject-template-images.env: |
+          {{- with secret "secret/data/ecomove/images" -}}
+          DATABASE_URL={{ .Data.data.DATABASE_URL }}
+          IMAGE_SERVICE_URL={{ .Data.data.IMAGE_SERVICE_URL }}
+          JWT_SECRET={{ .Data.data.JWT_SECRET }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-file-images.env: "images.env"
     spec:
+      serviceAccountName: myapp-sa
       containers:
         - name: migrate
-          image: jdavidperalta/backend-pipeline-images:0.0.1 # o una imagen que tenga drizzle-kit
+          image: jdavidperalta/backend-pipeline-images:0.0.2
           command: ["/bin/sh", "-c"]
           args:
             - |
               echo "🗄️  Iniciando migraciones de base de datos..."
-              echo "📁 Directorio actual: $(pwd)"
-              echo "📂 Contenido:"
               ls -la
-              echo ""
-              echo "📂 Contenido de build/:"
               ls -la build/
-              echo ""
-              echo "🔧 Ejecutando drizzle-kit push con config en build/..."
+              echo "🔧 Ejecutando drizzle-kit push..."
               npx drizzle-kit push --config=build/drizzle.config.js
-              echo ""
               echo "✅ Migración completada!"
-          envFrom:
-            - secretRef:
-                name: images-secret   # tus variables de DB (POSTGRES_USER, PASSWORD, etc)
       restartPolicy: Never
   backoffLimit: 1

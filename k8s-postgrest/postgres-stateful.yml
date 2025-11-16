@@ -13,31 +13,34 @@ spec:
     metadata:
       labels:
         app: postgres
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/agent-inject-init-first: "true"
+        vault.hashicorp.com/role: "bd-vehicles"
+        vault.hashicorp.com/agent-inject-secret-db.env: "secret/data/ecomove/bd-vehicles"
+        vault.hashicorp.com/vault-address: "http://external-vault-bd.postgres.svc.cluster.local:8200"
+        vault.hashicorp.com/agent-inject-template-db.env: |
+          {{- with secret "secret/data/ecomove/bd-vehicles" -}}
+          export POSTGRES_USER="{{ .Data.data.DB_USER }}"
+          export POSTGRES_PASSWORD="{{ .Data.data.DB_APP_USER_PASSWORD }}"
+          export POSTGRES_DB="{{ .Data.data.DB_NAME_AUTH }}"
+          {{- end }}
     spec:
+      serviceAccountName: myapp-bd
       containers:
         - name: postgres
           image: postgres:16.3
           ports:
             - containerPort: 5432
-          env:
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: DB_USER
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: DB_APP_USER_PASSWORD
-            - name: POSTGRES_DB
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: DB_NAME_AUTH
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              source /vault/secrets/db.env
+              exec docker-entrypoint.sh postgres
           volumeMounts:
             - name: postgres-pvc
               mountPath: /var/lib/postgresql/data
+  
   volumeClaimTemplates:
     - metadata:
         name: postgres-pvc
