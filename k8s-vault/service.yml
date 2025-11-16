@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-vault
+  namespace: postgres
+spec:
+  type: ExternalName
+  externalName: external-vault.development-ecomove.svc.cluster.local
+  ports:
+  - port: 8200
+    targetPort: 8200
+    protocol: TCP

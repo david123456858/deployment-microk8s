@@ -22,8 +22,8 @@ spec:
         vault.hashicorp.com/agent-inject-template-db: |
           {{- with secret "secret/data/ecomove/bd-vehicles" -}}
           export POSTGRES_USER="{{ .Data.data.DB_USER }}"
-          export POSTGRES_PASSWORD="{{ .Data.data.DB_APP_USER_PASSWORD }}"
-          export POSTGRES_DB="{{ .Data.data.DB_NAME_AUTH }}"
+          export POSTGRES_PASSWORD="{{ .Data.data.POSTGRES_PASSWORD }}"
+          export POSTGRES_DB="{{ .Data.data.POSTGRES_DB }}"
           {{- end }}
         vault.hashicorp.com/agent-inject-file-db: "db.env"
     spec:

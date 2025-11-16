@@ -13,28 +13,31 @@ spec:
     metadata:
       labels:
         app: postgres-images
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/agent-inject-init-first: "true"
+        vault.hashicorp.com/role: "bd-images"
+        vault.hashicorp.com/agent-inject-secret-db: "secret/data/ecomove/bd-images"
+        vault.hashicorp.com/vault-address: "http://external-vault.development-ecomove.svc.cluster.local:8200" 
+        vault.hashicorp.com/agent-inject-template-db: |
+          {{- with secret "secret/data/ecomove/bd-images" -}}
+          export POSTGRES_USER="{{ .Data.data.DB_USER }}"
+          export POSTGRES_PASSWORD="{{ .Data.data.DB_APP_USER_PASSWORD }}"
+          export POSTGRES_DB="{{ .Data.data.DB_NAME_IMAGES }}"
+          {{- end }}
+        vault.hashicorp.com/agent-inject-file-db: "db.env"
     spec:
+      serviceAccountName: myapp-bd
       containers:
         - name: postgres-images
           image: postgres:16.3
           ports:
             - containerPort: 5432
-          env:
-            - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret-images 
-                  key: DB_USER
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret-images
-                  key: DB_APP_USER_PASSWORD
-            - name: POSTGRES_DB
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret-images 
-                  key: DB_NAME_IMAGES
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              source /vault/secrets/db.env
+              exec docker-entrypoint.sh postgres
           volumeMounts:
             - name: postgres-pvc-images
               mountPath: /var/lib/postgresql/data
